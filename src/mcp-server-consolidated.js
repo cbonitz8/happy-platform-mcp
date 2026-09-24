@@ -10,6 +10,7 @@ import { AsyncLocalStorage } from 'async_hooks';
 import { ListToolsRequestSchema, CallToolRequestSchema, ListResourcesRequestSchema, ReadResourceRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import fs from 'fs/promises';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { configManager, instanceToClientOptions } from './config-manager.js';
 import { ServiceNowClient } from './servicenow-client.js';
 import { syncScript, syncAllScripts, SCRIPT_TYPES } from './script-sync.js';
@@ -156,7 +157,7 @@ export async function createMcpServer(serviceNowClient, options = {}) {
   // Load table metadata
   let tableMetadata = {};
   try {
-    const metadataPath = path.resolve(path.dirname(import.meta.url.replace('file://', '')), 'config/comprehensive-table-definitions.json');
+    const metadataPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 'config/comprehensive-table-definitions.json');
     const rawData = await fs.readFile(metadataPath, 'utf-8');
     const fullData = JSON.parse(rawData);
 
